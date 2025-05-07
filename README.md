@@ -12,7 +12,7 @@
 
 ## 🌟 ST-3 Final Project for Data Structures and Algorithms (DSA) and Java Subject
 
-<img src="https://media.tenor.com/JkINIWacEr4AAAAM/meds-dr.gif" alt="Pharmacist GIF" width="200">
+<img src="https://media.tenor.com/HHT4dska9YUAAAAM/thats-the-spirit-pharmacist.gif" alt="Pharmacist GIF" width="200">
 
 [Features](#-features) · [Project Structure](#-project-structure) · [Installation](#-installation) · [Usage](#-usage)
 
