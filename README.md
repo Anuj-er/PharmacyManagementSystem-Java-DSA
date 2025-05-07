@@ -1,6 +1,4 @@
-<div align="center">
-https://github.com/Anuj-er/PharmacyManagementSystem-Java-DSA/
-  
+<div align="center">  
 # 💊 Pharmacy Management System
 
 ![Stars](https://img.shields.io/github/stars/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
