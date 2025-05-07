@@ -1,4 +1,5 @@
 <div align="center">  
+
 # 💊 Pharmacy Management System
 
 ![Stars](https://img.shields.io/github/stars/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
@@ -9,9 +10,9 @@
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Data Structures](https://img.shields.io/badge/Data_Structures-007396?style=for-the-badge&logo=java&logoColor=white)
 
-#### 🌟 ST-3 Final Project for Data Structures and Algorithms (DSA) and Java Subject
+## 🌟 ST-3 Final Project for Data Structures and Algorithms (DSA) and Java Subject
 
-![Pharmacy Management System](project_files/screenshot.png)
+<img src="https://media.tenor.com/JkINIWacEr4AAAAM/meds-dr.gif" alt="Pharmacist GIF" width="200">
 
 [Features](#-features) · [Project Structure](#-project-structure) · [Installation](#-installation) · [Usage](#-usage)
 
@@ -33,6 +34,8 @@
 ## 📋 Overview
 The Pharmacy Management System is a comprehensive Java application developed as a final project for the Data Structures and Algorithms (DSA) and Java course. This system provides a complete solution for pharmacy management, including inventory control, customer management, medicine tracking, and sales processing.
 
+<img src="project_files/screenshot.png" alt="Pharmacy Management System" width="600" height="400">
+
 ## 🚀 Features
 
 - **🏥 Medicine Management**: Add, search, update, and remove medicines from inventory
@@ -44,7 +47,8 @@ The Pharmacy Management System is a comprehensive Java application developed as 
 - **💾 Data Persistence**: Save and load data using CSV files
 
 ## 🗂 Project Structure
-
+<div style="width: 100%; height:600px ;">
+    
 ```mermaid
 graph TD
     A[Pharmacy Management System] --> B[Controllers]
@@ -72,6 +76,7 @@ graph TD
     
     F --> F1[DataStore]
 ```
+</div>
 
 ## 💻 Technical Implementation
 
