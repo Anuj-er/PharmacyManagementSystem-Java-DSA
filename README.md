@@ -2,11 +2,6 @@
 
 # 💊 Pharmacy Management System
 
-![Stars](https://img.shields.io/github/stars/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
-![Forks](https://img.shields.io/github/forks/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
-![Issues](https://img.shields.io/github/issues/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
-![License](https://img.shields.io/github/license/Anuj-er/PharmacyManagementSystem-Java-DSA?style=for-the-badge)
-
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Data Structures](https://img.shields.io/badge/Data_Structures-007396?style=for-the-badge&logo=java&logoColor=white)
 
