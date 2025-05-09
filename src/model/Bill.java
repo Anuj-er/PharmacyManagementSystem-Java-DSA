@@ -1,65 +1,87 @@
 package model;
 
-
 import data_structure.MyLinkedList;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 public class Bill {
-    private final String billId;
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+
     private final String customerId;
     private final String customerName;
     private final MyLinkedList<CartItem> items;
     private final double totalAmount;
-    private final LocalDate billDate;
+    private final String billId;
+    private final String dateTime;
 
     public Bill(String customerId, String customerName, MyLinkedList<CartItem> items, double totalAmount) {
-        this.billId = UUID.randomUUID().toString().substring(0, 8);
         this.customerId = customerId;
         this.customerName = customerName;
         this.items = items;
         this.totalAmount = totalAmount;
-        this.billDate = LocalDate.now();
+        this.billId = generateBillId();
+        this.dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    private String generateBillId() {
+        return "BILL" + System.currentTimeMillis() % 10000;
     }
 
     public void displayBill() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        System.out.println("\n===============================================");
-        System.out.println("             PHARMACY BILL RECEIPT             ");
-        System.out.println("===============================================");
-        System.out.println("Bill No: " + billId);
-        System.out.println("Date: " + billDate.format(formatter));
-        System.out.println("Customer ID: " + customerId);
-        System.out.println("Customer Name: " + customerName);
-        System.out.println("-----------------------------------------------");
-        System.out.printf("%-5s %-20s %-10s %-10s %-10s\n", "No.", "Medicine", "Price", "Qty", "Amount");
-        System.out.println("-----------------------------------------------");
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
+        System.out.println("                        PHARMACY BILL");
+        System.out.println("=".repeat(60) + RESET);
 
+        // Print bill details
+        System.out.println(GREEN + "\nBill Details:" + RESET);
+        System.out.printf("%-15s: %s\n", "Bill ID", BOLD + billId + RESET);
+        System.out.printf("%-15s: %s\n", "Date & Time", dateTime);
+        System.out.printf("%-15s: %s\n", "Customer ID", customerId);
+        System.out.printf("%-15s: %s\n", "Customer Name", customerName);
+
+        // Print items header
+        System.out.println(CYAN + BOLD + "\n" + "-".repeat(60));
+        System.out.printf("%-8s | %-20s | %-8s | %-10s | %-10s\n",
+            "Item ID", "Name", "Quantity", "Price", "Subtotal");
+        System.out.println("-".repeat(60) + RESET);
+
+        // Print items
         for (int i = 0; i < items.size(); i++) {
             CartItem item = items.get(i);
-            System.out.printf("%-5d %-20s ₹%-9.2f %-10d ₹%-9.2f\n",
-                    (i+1),
-                    item.getMedicineName(),
-                    item.getPrice(),
-                    item.getQuantity(),
-                    item.getSubtotal()
-            );
+            System.out.printf("%-8s | %-20s | %-8d | $%-9.2f | $%-9.2f\n",
+                item.getMedicineId(),
+                item.getMedicineName(),
+                item.getQuantity(),
+                item.getPrice(),
+                item.getSubtotal());
         }
 
-        System.out.println("-----------------------------------------------");
-        System.out.printf("%-46s ₹%-9.2f\n", "Subtotal:", totalAmount);
-        System.out.printf("%-46s ₹%-9.2f\n", "Tax (5%):", totalAmount * 0.05);
-        System.out.printf("%-46s ₹%-9.2f\n", "TOTAL:", totalAmount * 1.05);
-        System.out.println("===============================================");
-        System.out.println("Thank you for your purchase!");
-        System.out.println("Please visit again.");
-        System.out.println("===============================================");
+        // Print total
+        System.out.println(CYAN + BOLD + "-".repeat(60) + RESET);
+        System.out.printf("%-38s | %-10s | $%-9.2f\n",
+            "", "Total Amount", totalAmount);
+        System.out.println(CYAN + BOLD + "=".repeat(60) + RESET);
+
+        // Print thank you message
+        System.out.println(GREEN + "\nThank you for your purchase!" + RESET);
+        System.out.println("Please keep this bill for your records.");
+        System.out.println("For any queries, please contact our customer service.");
+        
+        // Print footer
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(60) + RESET);
     }
 
     public void saveToFile() {
-        util.BillUtility.saveBillToFile(this);
+        // Implementation for saving bill to file
     }
+
+    // Getters
     public String getCustomerId() {
         return customerId;
     }
@@ -74,5 +96,13 @@ public class Bill {
 
     public double getTotalAmount() {
         return totalAmount;
+    }
+
+    public String getBillId() {
+        return billId;
+    }
+
+    public String getDateTime() {
+        return dateTime;
     }
 }

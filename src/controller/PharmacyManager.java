@@ -21,6 +21,11 @@ public class PharmacyManager {
         bills = new MyLinkedList<>();
     }
 
+    // Get medicines list
+    public MyLinkedList<Medicine> getMedicines() {
+        return medicines;
+    }
+
     // Show all medicines
     public void showAllMedicines() {
         System.out.println("Medicine Inventory:");
@@ -302,5 +307,29 @@ public class PharmacyManager {
         if (!found) {
             System.out.println("No medicines below the threshold quantity.");
         }
+    }
+
+    // Find customers by phone number
+    public MyLinkedList<Customer> findCustomersByPhone(String phoneNumber) {
+        MyLinkedList<Customer> results = new MyLinkedList<>();
+        for (int i = 0; i < customers.size(); i++) {
+            Customer cust = customers.get(i);
+            if (cust.getPhoneNumber().equals(phoneNumber)) {
+                results.add(cust);
+            }
+        }
+        return results;
+    }
+
+    // Find customers by email
+    public MyLinkedList<Customer> findCustomersByEmail(String email) {
+        MyLinkedList<Customer> results = new MyLinkedList<>();
+        for (int i = 0; i < customers.size(); i++) {
+            Customer cust = customers.get(i);
+            if (cust.getEmail().equalsIgnoreCase(email)) {
+                results.add(cust);
+            }
+        }
+        return results;
     }
 }

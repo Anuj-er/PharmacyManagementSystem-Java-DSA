@@ -3,6 +3,12 @@ package model;
 import data_structure.MyLinkedList;
 
 public class Cart {
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+
     private final String customerId;
     private final MyLinkedList<CartItem> items;
 
@@ -93,19 +99,22 @@ public class Cart {
 
     public void displayCart() {
         if (items.isEmpty()) {
-            System.out.println("Cart is empty.");
+            System.out.println(RED + "\nCart is empty." + RESET);
             return;
         }
 
-        System.out.println("\n===== Your Cart =====");
-        System.out.println("----------------------------------------------------------");
-        System.out.printf("%-5s %-20s %-10s %-10s %-10s\n", "No.", "Medicine", "Price", "Quantity", "Subtotal");
-        System.out.println("----------------------------------------------------------");
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
+        System.out.println("                        YOUR CART");
+        System.out.println("=".repeat(60) + RESET);
+        System.out.println(CYAN + BOLD + "-".repeat(60));
+        System.out.printf("%-5s %-20s %-10s %-10s %-10s\n", 
+            "No.", "Medicine", "Price", "Quantity", "Subtotal");
+        System.out.println("-".repeat(60) + RESET);
 
         double total = 0;
         for (int i = 0; i < items.size(); i++) {
             CartItem item = items.get(i);
-            System.out.printf("%-5d %-20s ₹%-9.2f %-10d ₹%-9.2f\n",
+            System.out.printf("%-5d %-20s $%-9.2f %-10d $%-9.2f\n",
                     (i+1),
                     item.getMedicineName(),
                     item.getPrice(),
@@ -115,9 +124,11 @@ public class Cart {
             total += item.getSubtotal();
         }
 
-        System.out.println("----------------------------------------------------------");
-        System.out.printf("%-46s ₹%-9.2f\n", "Total:", total);
-        System.out.println("----------------------------------------------------------");
+        System.out.println(CYAN + BOLD + "-".repeat(60) + RESET);
+        System.out.printf("%-46s $%-9.2f\n", 
+            GREEN + BOLD + "Total:" + RESET, 
+            total);
+        System.out.println(CYAN + BOLD + "=".repeat(60) + RESET);
     }
 
     public double getCartTotal() {

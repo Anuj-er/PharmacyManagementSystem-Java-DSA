@@ -65,12 +65,14 @@ public class CSVUtility {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 4) {
+                if (parts.length >= 4) {
+                    String password = parts.length > 4 ? parts[4].trim() : ""; // Handle existing records without password
                     Customer customer = new Customer(
                             parts[0].trim(),
                             parts[1].trim(),
                             parts[2].trim(),
-                            parts[3].trim()
+                            parts[3].trim(),
+                            password
                     );
                     list.add(customer);
                 }
@@ -84,14 +86,15 @@ public class CSVUtility {
     // Save Customer data to CSV
     public static void saveCustomers(String filepath, MyLinkedList<Customer> list) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filepath))) {
-            bw.write("customerId,name,phoneNumber,email\n");
+            bw.write("customerId,name,phoneNumber,email,password\n");
             for (int i = 0; i < list.size(); i++) {
                 Customer cust = list.get(i);
                 bw.write(String.join(",",
                         cust.getCustomerId(),
                         cust.getName(),
                         cust.getPhoneNumber(),
-                        cust.getEmail()
+                        cust.getEmail(),
+                        cust.getPassword()
                 ));
                 bw.newLine();
             }

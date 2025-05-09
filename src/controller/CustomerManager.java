@@ -15,10 +15,10 @@ public class CustomerManager {
         this.pharmacyManager = pharmacyManager;
     }
 
-    // Login a customer with ID
-    public boolean login(String customerId) {
+    // Login a customer with ID and password
+    public boolean login(String customerId, String password) {
         Customer customer = pharmacyManager.findCustomerById(customerId);
-        if (customer != null) {
+        if (customer != null && customer.getPassword().equals(password)) {
             this.currentCustomer = customer;
             this.cart = new Cart(customerId);
             return true;
@@ -148,34 +148,85 @@ public class CustomerManager {
         return bill;
     }
 
-    public boolean registerCustomer(String name, String phoneNumber, String email) {
+    public boolean registerCustomer(String name, String phoneNumber, String email, String password) {
         // Validate inputs
         if (name == null || name.trim().isEmpty()) {
             System.out.println("Error: Name cannot be empty.");
             return false;
         }
 
+        // Validate phone number format and content
         if (phoneNumber == null || !phoneNumber.matches("\\d{10}")) {
-            System.out.println("Error: Phone number must be 10 digits.");
+            System.out.println("Error: Phone number must be exactly 10 digits.");
+            return false;
+        }
+        
+        // Check if phone number contains all zeros
+        if (phoneNumber.matches("0{10}")) {
+            System.out.println("Error: Phone number cannot be all zeros.");
             return false;
         }
 
-        if (email == null || !email.contains("@") || !email.contains(".")) {
+        // Check for duplicate phone number
+        MyLinkedList<Customer> existingCustomers = pharmacyManager.findCustomersByPhone(phoneNumber);
+        if (!existingCustomers.isEmpty()) {
+            System.out.println("Error: Phone number already registered with customer ID: " + 
+                existingCustomers.get(0).getCustomerId());
+            return false;
+        }
+
+        // Validate email format
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             System.out.println("Error: Invalid email format.");
+            return false;
+        }
+
+        // Check for duplicate email
+        MyLinkedList<Customer> existingEmails = pharmacyManager.findCustomersByEmail(email);
+        if (!existingEmails.isEmpty()) {
+            System.out.println("Error: Email already registered with customer ID: " + 
+                existingEmails.get(0).getCustomerId());
+            return false;
+        }
+
+        if (password == null || password.length() < 6) {
+            System.out.println("Error: Password must be at least 6 characters long.");
             return false;
         }
 
         // Generate a customer ID using PharmacyManager method
         String customerId = pharmacyManager.generateCustomerId();
 
-        Customer newCustomer = new Customer(customerId, name, phoneNumber, email);
+        Customer newCustomer = new Customer(customerId, name, phoneNumber, email, password);
         pharmacyManager.addCustomer(newCustomer);
 
         System.out.println("\nCustomer Information:");
         System.out.println(newCustomer);
 
         // Auto login the new customer
-        return login(customerId);
+        return login(customerId, password);
+    }
+
+    // Check if phone number is already registered
+    public boolean isPhoneRegistered(String phoneNumber) {
+        return !pharmacyManager.findCustomersByPhone(phoneNumber).isEmpty();
+    }
+
+    // Get customer ID by phone number
+    public String getCustomerIdByPhone(String phoneNumber) {
+        MyLinkedList<Customer> customers = pharmacyManager.findCustomersByPhone(phoneNumber);
+        return customers.isEmpty() ? null : customers.get(0).getCustomerId();
+    }
+
+    // Check if email is already registered
+    public boolean isEmailRegistered(String email) {
+        return !pharmacyManager.findCustomersByEmail(email).isEmpty();
+    }
+
+    // Get customer ID by email
+    public String getCustomerIdByEmail(String email) {
+        MyLinkedList<Customer> customers = pharmacyManager.findCustomersByEmail(email);
+        return customers.isEmpty() ? null : customers.get(0).getCustomerId();
     }
 
     // Get cart

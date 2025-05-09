@@ -5,12 +5,14 @@ public class Customer {
     private String name;
     private String phoneNumber;
     private String email;
+    private String password;
 
-    public Customer(String customerId, String name, String phoneNumber, String email) {
+    public Customer(String customerId, String name, String phoneNumber, String email, String password) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
     }
 
     // Getters and Setters
@@ -44,6 +46,14 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     // Optional: toString method for debugging
