@@ -29,7 +29,11 @@
 ## 📋 Overview
 The Pharmacy Management System is a comprehensive Java application developed as a final project for the Data Structures and Algorithms (DSA) and Java course. This system provides a complete solution for pharmacy management, including inventory control, customer management, medicine tracking, and sales processing.
 
-<img src="project_files/screenshot.png" alt="Pharmacy Management System" width="600" height="400">
+<div align="center">
+    
+<img src="project_files/screenshot.png" alt="Pharmacy Management System" width="600">
+    
+</div>
 
 ## 🚀 Features
 
