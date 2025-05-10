@@ -98,7 +98,7 @@ graph TD
 
 2. **Compile the Project**
    ```bash
-   javac -d output src/Main.java src/controller/*.java src/model/*.java src/data_structure/*.java src/util/*.java src/storage/*.java
+   javac -d output src/Main.java src/controller/*.java src/model/*.java src/data_structure/*.java src/util/*.java src/storage/*.java src/config/*.java
    ```
 
 3. **Run the Application**
