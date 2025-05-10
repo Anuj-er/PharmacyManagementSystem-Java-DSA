@@ -7,6 +7,14 @@ import model.Bill;
 import data_structure.MyLinkedList;
 
 public class CustomerManager {
+    // Add color constants for better interface
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+
     private final PharmacyManager pharmacyManager;
     private Customer currentCustomer;
     private Cart cart;
@@ -47,23 +55,102 @@ public class CustomerManager {
     public void searchMedicinesByName(String name) {
         MyLinkedList<Medicine> results = pharmacyManager.findMedicinesByName(name);
         if (results.isEmpty()) {
-            System.out.println("No medicines found matching '" + name + "'");
+            System.out.println(RED + "\nNo medicines found matching '" + name + "'" + RESET);
             return;
         }
 
-        System.out.println("\n===== Search Results for '" + name + "' =====");
+        // Calculate column widths
+        int idWidth = 8;
+        int nameWidth = 25;
+        int manufacturerWidth = 20;
+        int priceWidth = 10;
+        int expiryWidth = 12;
+        int quantityWidth = 10;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(95));
+        System.out.println("Search Results for '" + name + "'");
+        System.out.println("=".repeat(95));
+        System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+            priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n", 
+            "ID", "Name", "Manufacturer", "Price", "Expiry", "Stock");
+        System.out.println("=".repeat(95) + RESET);
+
+        // Print medicines
         for (int i = 0; i < results.size(); i++) {
-            System.out.println((i+1) + ". " + results.get(i));
+            Medicine med = results.get(i);
+            String price = String.format("$%.2f", med.getPrice());
+            String stock = med.getQuantity() < 10 ? 
+                RED + med.getQuantity() + RESET : 
+                GREEN + med.getQuantity() + RESET;
+
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+                priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n",
+                med.getId(),
+                med.getName(),
+                med.getManufacturer(),
+                price,
+                med.getExpiryDate(),
+                stock);
         }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(95) + RESET);
+        
+        // Print legend
+        System.out.println(YELLOW + "\nLegend:" + RESET);
+        System.out.println(RED + "● " + RESET + "Low Stock (< 10 units)");
+        System.out.println(GREEN + "● " + RESET + "Adequate Stock (≥ 10 units)");
     }
 
     // Display available medicines
     public void viewAvailableMedicines() {
-        System.out.println("\n===== Available Medicines =====");
-        System.out.printf("%-5s %-10s %-20s %-15s %-10s %-10s\n",
-                "No.", "ID", "Name", "Manufacturer", "Price", "Stock");
-        System.out.println("--------------------------------------------------------------------");
-        pharmacyManager.showAllMedicines();
+        MyLinkedList<Medicine> medicines = pharmacyManager.getMedicines();
+        if (medicines.isEmpty()) {
+            System.out.println(RED + "\nNo medicines found." + RESET);
+            return;
+        }
+
+        // Calculate column widths
+        int idWidth = 8;
+        int nameWidth = 25;
+        int manufacturerWidth = 20;
+        int priceWidth = 10;
+        int expiryWidth = 12;
+        int quantityWidth = 10;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(95));
+        System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+            priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n", 
+            "ID", "Name", "Manufacturer", "Price", "Expiry", "Stock");
+        System.out.println("=".repeat(95) + RESET);
+
+        // Print medicines
+        for (int i = 0; i < medicines.size(); i++) {
+            Medicine med = medicines.get(i);
+            String price = String.format("$%.2f", med.getPrice());
+            String stock = med.getQuantity() < 10 ? 
+                RED + med.getQuantity() + RESET : 
+                GREEN + med.getQuantity() + RESET;
+
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+                priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n",
+                med.getId(),
+                med.getName(),
+                med.getManufacturer(),
+                price,
+                med.getExpiryDate(),
+                stock);
+        }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(95) + RESET);
+        
+        // Print legend
+        System.out.println(YELLOW + "\nLegend:" + RESET);
+        System.out.println(RED + "● " + RESET + "Low Stock (< 10 units)");
+        System.out.println(GREEN + "● " + RESET + "Adequate Stock (≥ 10 units)");
     }
 
     public void addToCart(String medicineId, int quantity) {

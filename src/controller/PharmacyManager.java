@@ -8,6 +8,14 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class PharmacyManager {
+    // Add color constants for better interface
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+
     private final MyLinkedList<Medicine> medicines;
     private final MyLinkedList<Customer> customers;
     private final MyLinkedList<Transaction> transactions;
@@ -28,20 +36,124 @@ public class PharmacyManager {
 
     // Show all medicines
     public void showAllMedicines() {
-        System.out.println("Medicine Inventory:");
-        medicines.display();
+        if (medicines.isEmpty()) {
+            System.out.println(RED + "\nNo medicines found." + RESET);
+            return;
+        }
+
+        // Calculate column widths
+        int idWidth = 8;
+        int nameWidth = 25;
+        int manufacturerWidth = 20;
+        int priceWidth = 10;
+        int expiryWidth = 12;
+        int quantityWidth = 10;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(95));
+        System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+            priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n", 
+            "ID", "Name", "Manufacturer", "Price", "Expiry", "Stock");
+        System.out.println("=".repeat(95) + RESET);
+
+        // Print medicines
+        for (int i = 0; i < medicines.size(); i++) {
+            Medicine med = medicines.get(i);
+            String price = String.format("$%.2f", med.getPrice());
+            String stock = med.getQuantity() < 10 ? 
+                RED + med.getQuantity() + RESET : 
+                GREEN + med.getQuantity() + RESET;
+
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + manufacturerWidth + "s | %-" + 
+                priceWidth + "s | %-" + expiryWidth + "s | %-" + quantityWidth + "s\n",
+                med.getId(),
+                med.getName(),
+                med.getManufacturer(),
+                price,
+                med.getExpiryDate(),
+                stock);
+        }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(95) + RESET);
+        
+        // Print legend
+        System.out.println(YELLOW + "\nLegend:" + RESET);
+        System.out.println(RED + "● " + RESET + "Low Stock (< 10 units)");
+        System.out.println(GREEN + "● " + RESET + "Adequate Stock (≥ 10 units)");
     }
 
     // Show all customers
     public void showAllCustomers() {
-        System.out.println("Customer List:");
-        customers.display();
+        if (customers.isEmpty()) {
+            System.out.println(RED + "\nNo customers found." + RESET);
+            return;
+        }
+
+        // Calculate column widths
+        int idWidth = 8;
+        int nameWidth = 25;
+        int phoneWidth = 15;
+        int emailWidth = 30;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(85));
+        System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n", 
+            "ID", "Name", "Phone", "Email");
+        System.out.println("=".repeat(85) + RESET);
+
+        // Print customers
+        for (int i = 0; i < customers.size(); i++) {
+            Customer cust = customers.get(i);
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n",
+                cust.getCustomerId(),
+                cust.getName(),
+                cust.getPhoneNumber(),
+                cust.getEmail());
+        }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(85) + RESET);
     }
 
     // Show all transactions
     public void showAllTransactions() {
-        System.out.println("Transaction History:");
-        transactions.display();
+        if (transactions.isEmpty()) {
+            System.out.println(RED + "\nNo transactions found." + RESET);
+            return;
+        }
+
+        // Calculate column widths
+        int transIdWidth = 12;
+        int customerIdWidth = 10;
+        int medicineIdWidth = 10;
+        int quantityWidth = 10;
+        int amountWidth = 12;
+        int dateWidth = 12;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(80));
+        System.out.printf("%-" + transIdWidth + "s | %-" + customerIdWidth + "s | %-" + medicineIdWidth + "s | %-" + 
+            quantityWidth + "s | %-" + amountWidth + "s | %-" + dateWidth + "s\n", 
+            "Transaction ID", "Customer ID", "Medicine ID", "Quantity", "Amount", "Date");
+        System.out.println("=".repeat(80) + RESET);
+
+        // Print transactions
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction tx = transactions.get(i);
+            String amount = String.format("$%.2f", tx.getTotalAmount());
+            System.out.printf("%-" + transIdWidth + "s | %-" + customerIdWidth + "s | %-" + medicineIdWidth + "s | %-" + 
+                quantityWidth + "d | %-" + amountWidth + "s | %-" + dateWidth + "s\n",
+                tx.getTransactionId(),
+                tx.getCustomerId(),
+                tx.getMedicineId(),
+                tx.getQuantity(),
+                amount,
+                tx.getTransactionDate());
+        }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(80) + RESET);
     }
 
     // Find a medicine by ID
@@ -173,6 +285,40 @@ public class PharmacyManager {
                 results.add(cust);
             }
         }
+
+        // Display results in attractive format
+        if (results.isEmpty()) {
+            System.out.println(RED + "\nNo customers found matching '" + name + "'" + RESET);
+            return results;
+        }
+
+        // Calculate column widths
+        int idWidth = 8;
+        int nameWidth = 25;
+        int phoneWidth = 15;
+        int emailWidth = 30;
+
+        // Print header
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(85));
+        System.out.println("Search Results for '" + name + "'");
+        System.out.println("=".repeat(85));
+        System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n", 
+            "ID", "Name", "Phone", "Email");
+        System.out.println("=".repeat(85) + RESET);
+
+        // Print customers
+        for (int i = 0; i < results.size(); i++) {
+            Customer cust = results.get(i);
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n",
+                cust.getCustomerId(),
+                cust.getName(),
+                cust.getPhoneNumber(),
+                cust.getEmail());
+        }
+
+        // Print footer
+        System.out.println(CYAN + BOLD + "=".repeat(85) + RESET);
+
         return results;
     }
 
@@ -180,16 +326,44 @@ public class PharmacyManager {
     public void updateCustomerInfo(String id, String name, String phone, String email) {
         Customer customer = findCustomerById(id);
         if (customer != null) {
-            System.out.println("\nCurrent Customer Information:");
-            System.out.println(customer);
+            // Calculate column widths
+            int idWidth = 8;
+            int nameWidth = 25;
+            int phoneWidth = 15;
+            int emailWidth = 30;
 
+            // Print current information
+            System.out.println(CYAN + BOLD + "\nCurrent Customer Information:" + RESET);
+            System.out.println("=".repeat(85));
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n", 
+                "ID", "Name", "Phone", "Email");
+            System.out.println("=".repeat(85));
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n",
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getPhoneNumber(),
+                customer.getEmail());
+            System.out.println("=".repeat(85));
+
+            // Update customer information
             customer.setName(name);
             customer.setPhoneNumber(phone);
             customer.setEmail(email);
 
             CSVUtility.saveCustomers("data/customers.csv", customers);
-            System.out.println("\nUpdated Customer Information:");
-            System.out.println(customer);
+
+            // Print updated information
+            System.out.println(CYAN + BOLD + "\nUpdated Customer Information:" + RESET);
+            System.out.println("=".repeat(85));
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n", 
+                "ID", "Name", "Phone", "Email");
+            System.out.println("=".repeat(85));
+            System.out.printf("%-" + idWidth + "s | %-" + nameWidth + "s | %-" + phoneWidth + "s | %-" + emailWidth + "s\n",
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getPhoneNumber(),
+                customer.getEmail());
+            System.out.println("=".repeat(85));
         } else {
             System.out.println("Customer with ID " + id + " not found.");
         }

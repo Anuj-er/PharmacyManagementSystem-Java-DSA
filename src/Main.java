@@ -326,6 +326,14 @@ public class Main {
         System.out.println("                      /:/  /       \\::/  /   ");
         System.out.println("                      \\/__/         \\/__/    " + RESET);
 
+        System.out.println(YELLOW + BOLD + "\nProject: Pharmacy Management System" + RESET);
+        System.out.println(YELLOW + "Developed for: Java and Data Structures & Algorithms (DSA)" + RESET);
+        System.out.println(YELLOW + "\nTeam Members:" + RESET);
+        System.out.println(GREEN + "• Anuj Kumar" + RESET);
+        System.out.println(GREEN + "• Anushi" + RESET);
+        System.out.println(GREEN + "• Akanksha Mishra" + RESET);
+        System.out.println(GREEN + "• Abhinav Rathee" + RESET);
+
         while (!exit) {
             System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
             System.out.println("                           MAIN MENU");
@@ -346,7 +354,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    customerInterface(customerManager, scanner);
+                    customerInterface(customerManager, pharmacyManager, scanner);
                     break;
                 case 0:
                     exit = true;
@@ -763,7 +771,7 @@ public class Main {
                     String updateId = scanner.nextLine();
 
                     if (updateId.matches("\\d+")) {
-                        updateId = "M" + updateId;
+                        updateId = "MED" + updateId;
                         System.out.println(CYAN + "Updating quantity for ID: " + updateId + RESET);
                     }
 
@@ -841,19 +849,17 @@ public class Main {
         }
     }
 
-    private static void customerInterface(CustomerManager customerManager, Scanner scanner) {
-
+    private static void customerInterface(CustomerManager customerManager, PharmacyManager pharmacyManager, Scanner scanner) {
         if (!customerManager.isLoggedIn()) {
-            customerLoginMenu(customerManager, scanner);
+            customerLoginMenu(customerManager, pharmacyManager, scanner);
             if (!customerManager.isLoggedIn()) {
                 return;
             }
         }
-
         customerMainMenu(customerManager, scanner);
     }
 
-    private static void customerLoginMenu(CustomerManager customerManager, Scanner scanner) {
+    private static void customerLoginMenu(CustomerManager customerManager, PharmacyManager pharmacyManager, Scanner scanner) {
         boolean backToMain = false;
 
         while (!backToMain && !customerManager.isLoggedIn()) {
@@ -875,6 +881,24 @@ public class Main {
                     String password = readPassword(scanner);
                     
                     if (customerManager.login(customerId, password)) {
+                        // Check if the password is default and prompt for change
+                        if (password.equals("default123")) {
+                            System.out.println(YELLOW + "\nYou are using a default password. Please set a new password." + RESET);
+                            String newPassword;
+                            boolean validPassword = false;
+                            do {
+                                System.out.print("Enter new password (min 8 characters, must include uppercase, lowercase, number, and special character): ");
+                                newPassword = readPassword(scanner);
+                                if (!isValidPassword(newPassword)) {
+                                    continue;
+                                }
+                                validPassword = true;
+                            } while (!validPassword);
+                            // Update password in the system
+                            customerManager.getCurrentCustomer().setPassword(newPassword);
+                            pharmacyManager.addCustomer(customerManager.getCurrentCustomer()); // This will overwrite the customer in the list and save
+                            System.out.println(GREEN + "\nPassword updated successfully!" + RESET);
+                        }
                         System.out.println(GREEN + "\nLogin successful! Welcome, " +
                                 customerManager.getCurrentCustomer().getName() + "!" + RESET);
                     } else {
@@ -1067,20 +1091,26 @@ public class Main {
     }
 
     private static void addToCartOption(CustomerManager customerManager, Scanner scanner) {
-        System.out.println(CYAN + BOLD + "\n" + "-".repeat(60));
-        System.out.println("                    ADD TO CART");
-        System.out.println("-".repeat(60) + RESET);
+        boolean continueAdding = true;
         
-        System.out.print(YELLOW + "\nDo you want to add a medicine to your cart? (y/n): " + RESET);
-        String choice = scanner.nextLine().trim().toLowerCase();
+        while (continueAdding) {
+            System.out.println(CYAN + BOLD + "\n" + "-".repeat(60));
+            System.out.println("                    ADD TO CART");
+            System.out.println("-".repeat(60) + RESET);
+            
+            System.out.print(YELLOW + "\nDo you want to add a medicine to your cart? (y/n): " + RESET);
+            String choice = scanner.nextLine().trim().toLowerCase();
 
-        if (choice.equals("y")) {
-            System.out.print(GREEN + "Enter Medicine ID to add to cart: " + RESET);
-            String medicineId = scanner.nextLine();
-            System.out.print(GREEN + "Enter quantity: " + RESET);
-            int quantity = getIntInput(scanner);
-            customerManager.addToCart(medicineId, quantity);
-            waitForEnter(scanner);
+            if (choice.equals("y")) {
+                System.out.print(GREEN + "Enter Medicine ID to add to cart: " + RESET);
+                String medicineId = scanner.nextLine();
+                System.out.print(GREEN + "Enter quantity: " + RESET);
+                int quantity = getIntInput(scanner);
+                customerManager.addToCart(medicineId, quantity);
+                waitForEnter(scanner);
+            } else {
+                continueAdding = false;
+            }
         }
     }
 
@@ -1208,7 +1238,13 @@ public class Main {
         
         System.out.println(GREEN + "\nWe hope you had a great experience with our Pharmacy Management System!");
         System.out.println("Your health and satisfaction are our top priorities.");
-        System.out.println("\nPlease visit us again!" + RESET);
+        System.out.println("\nProject: Java and Data Structures & Algorithms (DSA)");
+        System.out.println("\nDeveloped by:" + RESET);
+        System.out.println(YELLOW + "• Anuj Kumar" + RESET);
+        System.out.println(YELLOW + "• Anushi" + RESET);
+        System.out.println(YELLOW + "• Akanksha Mishra" + RESET);
+        System.out.println(YELLOW + "• Abhinav Rathee" + RESET);
+        System.out.println(GREEN + "\nPlease visit us again!" + RESET);
         
         System.out.println(CYAN + BOLD + "\n" + "=".repeat(60) + RESET);
     }

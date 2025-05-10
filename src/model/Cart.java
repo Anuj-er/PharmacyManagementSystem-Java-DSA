@@ -103,9 +103,6 @@ public class Cart {
             return;
         }
 
-        System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
-        System.out.println("                        YOUR CART");
-        System.out.println("=".repeat(60) + RESET);
         System.out.println(CYAN + BOLD + "-".repeat(60));
         System.out.printf("%-5s %-20s %-10s %-10s %-10s\n", 
             "No.", "Medicine", "Price", "Quantity", "Subtotal");
