@@ -334,6 +334,19 @@ public class Main {
         System.out.println(GREEN + "• Akanksha Mishra" + RESET);
         System.out.println(GREEN + "• Abhinav Rathee" + RESET);
 
+        // Add test credentials information
+        System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
+        System.out.println("                    TEST CREDENTIALS");
+        System.out.println("=".repeat(60) + RESET);
+        System.out.println(YELLOW + "\nFor Testing Purposes:" + RESET + "\n");
+        System.out.println(GREEN + "Admin Login:" + RESET);
+        System.out.println("Username: " + YELLOW + "admin" + RESET);
+        System.out.println("Password: " + YELLOW + "admin123" + RESET);
+        System.out.println("\n" + GREEN + "Customer Login:" + RESET);
+        System.out.println("Username: " + YELLOW + "C001" + RESET);
+        System.out.println("Password: " + YELLOW + "Customer0001" + RESET);
+        System.out.println("\n" + YELLOW + "Note: " + RESET + "These are sample credentials for testing. In a production environment, please use secure credentials.");
+
         while (!exit) {
             System.out.println(CYAN + BOLD + "\n" + "=".repeat(60));
             System.out.println("                           MAIN MENU");
